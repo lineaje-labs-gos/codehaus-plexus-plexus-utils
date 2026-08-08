@@ -80,7 +80,7 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment"> * @since 3.4.0</em>
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  <strong class="jxr_keyword">class</strong> <a name="StreamPumperTest" href="../../../../../org/codehaus/plexus/util/cli/StreamPumperTest.html#StreamPumperTest">StreamPumperTest</a> {
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">private</strong> String lineSeparator = System.lineSeparator();
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String lineSeparator = System.lineSeparator();
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      @Test
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">void</strong> pumping() {
@@ -107,7 +107,7 @@
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          StreamPumper pumper = <strong class="jxr_keyword">new</strong> StreamPumper(bais, pw);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>         pumper.run();
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         pumper.flush();
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>         System.out.println(<span class="jxr_string">"aaa"</span> + sw.toString());
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         System.out.println(<span class="jxr_string">"aaa"</span> + sw);
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         assertEquals(<span class="jxr_string">"This a test string"</span> + lineSeparator, sw.toString());
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>         pumper.close();
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>     }
@@ -161,7 +161,7 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TestConsumer <strong class="jxr_keyword">implements</strong> StreamConsumer {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a> 
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <strong class="jxr_keyword">private</strong> List&lt;String&gt; lines = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; lines = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> 
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> <em class="jxr_javadoccomment">         * Checks to see if this consumer consumed a particular line. This method will wait up to timeout number of</em>

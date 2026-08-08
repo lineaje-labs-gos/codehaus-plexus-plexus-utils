@@ -186,46 +186,47 @@
 <a class="jxr_linenumber" name="L178" href="#L178">178</a> 
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>         assertEquals(<span class="jxr_string">"cmd.exe"</span>, lines[0]);
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>         assertEquals(<span class="jxr_string">"/X"</span>, lines[1]);
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>         assertEquals(<span class="jxr_string">"/C"</span>, lines[2]);
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>         assertEquals(<span class="jxr_string">"\&quot;--password ;password\&quot;"</span>, lines[3]);
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>     }
-<a class="jxr_linenumber" name="L184" href="#L184">184</a> 
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>     @Test
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>     <strong class="jxr_keyword">void</strong> bourneShellQuotingCharacters() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>         <em class="jxr_comment">// { ' ', '$', ';', '&amp;', '|', '&lt;', '&gt;', '*', '?', '(', ')' };</em>
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>         <em class="jxr_comment">// test with values http://steve-parker.org/sh/bourne.shtml Appendix B - Meta-characters and Reserved Words</em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         Commandline commandline = <strong class="jxr_keyword">new</strong> Commandline(newShell());
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         commandline.setExecutable(<span class="jxr_string">"chmod"</span>);
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         commandline.getShell().setQuotedArgumentsEnabled(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>         commandline.createArg().setValue(<span class="jxr_string">" "</span>);
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>         commandline.createArg().setValue(<span class="jxr_string">"|"</span>);
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         commandline.createArg().setValue(<span class="jxr_string">"&amp;&amp;"</span>);
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         commandline.createArg().setValue(<span class="jxr_string">"||"</span>);
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         commandline.createArg().setValue(<span class="jxr_string">";"</span>);
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         commandline.createArg().setValue(<span class="jxr_string">";;"</span>);
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         commandline.createArg().setValue(<span class="jxr_string">"&amp;"</span>);
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         commandline.createArg().setValue(<span class="jxr_string">"()"</span>);
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         commandline.createArg().setValue(<span class="jxr_string">"&lt;"</span>);
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         commandline.createArg().setValue(<span class="jxr_string">"&lt;&lt;"</span>);
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         commandline.createArg().setValue(<span class="jxr_string">"&gt;"</span>);
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         commandline.createArg().setValue(<span class="jxr_string">"&gt;&gt;"</span>);
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>         commandline.createArg().setValue(<span class="jxr_string">"*"</span>);
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>         commandline.createArg().setValue(<span class="jxr_string">"?"</span>);
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>         commandline.createArg().setValue(<span class="jxr_string">"["</span>);
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         commandline.createArg().setValue(<span class="jxr_string">"]"</span>);
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         commandline.createArg().setValue(<span class="jxr_string">"{"</span>);
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>         commandline.createArg().setValue(<span class="jxr_string">"}"</span>);
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>         commandline.createArg().setValue(<span class="jxr_string">"`"</span>);
-<a class="jxr_linenumber" name="L211" href="#L211">211</a> 
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>         String[] lines = commandline.getShellCommandline();
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>         System.out.println(Arrays.asList(lines));
-<a class="jxr_linenumber" name="L214" href="#L214">214</a> 
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>         assertEquals(<span class="jxr_string">"/bin/sh"</span>, lines[0]);
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>         assertEquals(<span class="jxr_string">"-c"</span>, lines[1]);
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>         assertEquals(
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>                 <span class="jxr_string">"'chmod' ' ' '|' '&amp;&amp;' '||' ';' ';;' '&amp;' '()' '&lt;' '&lt;&lt;' '&gt;' '&gt;&gt;' '*' '?' '[' ']' '{' '}' '`'"</span>, lines[2]);
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>     }
-<a class="jxr_linenumber" name="L220" href="#L220">220</a> }
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>         assertEquals(<span class="jxr_string">"/D"</span>, lines[2]);
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>         assertEquals(<span class="jxr_string">"/C"</span>, lines[3]);
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>         assertEquals(<span class="jxr_string">"\&quot;--password ;password\&quot;"</span>, lines[4]);
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>     }
+<a class="jxr_linenumber" name="L185" href="#L185">185</a> 
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>     @Test
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">void</strong> bourneShellQuotingCharacters() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>         <em class="jxr_comment">// { ' ', '$', ';', '&amp;', '|', '&lt;', '&gt;', '*', '?', '(', ')' };</em>
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <em class="jxr_comment">// test with values http://steve-parker.org/sh/bourne.shtml Appendix B - Meta-characters and Reserved Words</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         Commandline commandline = <strong class="jxr_keyword">new</strong> Commandline(newShell());
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         commandline.setExecutable(<span class="jxr_string">"chmod"</span>);
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         commandline.getShell().setQuotedArgumentsEnabled(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         commandline.createArg().setValue(<span class="jxr_string">" "</span>);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         commandline.createArg().setValue(<span class="jxr_string">"|"</span>);
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         commandline.createArg().setValue(<span class="jxr_string">"&amp;&amp;"</span>);
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         commandline.createArg().setValue(<span class="jxr_string">"||"</span>);
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         commandline.createArg().setValue(<span class="jxr_string">";"</span>);
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         commandline.createArg().setValue(<span class="jxr_string">";;"</span>);
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>         commandline.createArg().setValue(<span class="jxr_string">"&amp;"</span>);
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         commandline.createArg().setValue(<span class="jxr_string">"()"</span>);
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         commandline.createArg().setValue(<span class="jxr_string">"&lt;"</span>);
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         commandline.createArg().setValue(<span class="jxr_string">"&lt;&lt;"</span>);
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         commandline.createArg().setValue(<span class="jxr_string">"&gt;"</span>);
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>         commandline.createArg().setValue(<span class="jxr_string">"&gt;&gt;"</span>);
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>         commandline.createArg().setValue(<span class="jxr_string">"*"</span>);
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>         commandline.createArg().setValue(<span class="jxr_string">"?"</span>);
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>         commandline.createArg().setValue(<span class="jxr_string">"["</span>);
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         commandline.createArg().setValue(<span class="jxr_string">"]"</span>);
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>         commandline.createArg().setValue(<span class="jxr_string">"{"</span>);
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>         commandline.createArg().setValue(<span class="jxr_string">"}"</span>);
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>         commandline.createArg().setValue(<span class="jxr_string">"`"</span>);
+<a class="jxr_linenumber" name="L212" href="#L212">212</a> 
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>         String[] lines = commandline.getShellCommandline();
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>         System.out.println(Arrays.asList(lines));
+<a class="jxr_linenumber" name="L215" href="#L215">215</a> 
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>         assertEquals(<span class="jxr_string">"/bin/sh"</span>, lines[0]);
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         assertEquals(<span class="jxr_string">"-c"</span>, lines[1]);
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>         assertEquals(
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>                 <span class="jxr_string">"'chmod' ' ' '|' '&amp;&amp;' '||' ';' ';;' '&amp;' '()' '&lt;' '&lt;&lt;' '&gt;' '&gt;&gt;' '*' '?' '[' ']' '{' '}' '`'"</span>, lines[2]);
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>     }
+<a class="jxr_linenumber" name="L221" href="#L221">221</a> }
 </pre>
 <hr/>
 <div id="footer">© 2001–2026 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>

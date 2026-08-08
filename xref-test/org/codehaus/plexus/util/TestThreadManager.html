@@ -140,16 +140,15 @@
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> reset() {
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>         toRunThreads.clear();
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         <strong class="jxr_keyword">for</strong> (Object runThread : runThreads) {
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>             <a name="AbstractTestThread" href="../../../../org/codehaus/plexus/util/AbstractTestThread.html#AbstractTestThread">AbstractTestThread</a> test = (<a name="AbstractTestThread" href="../../../../org/codehaus/plexus/util/AbstractTestThread.html#AbstractTestThread">AbstractTestThread</a>) runThread;
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>             test.reset();
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>             registerThread(test);
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         }
-<a class="jxr_linenumber" name="L140" href="#L140">140</a> 
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         runThreads.clear();
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         failedThreads.clear();
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>     }
-<a class="jxr_linenumber" name="L144" href="#L144">144</a> }
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         <strong class="jxr_keyword">for</strong> (<a name="AbstractTestThread" href="../../../../org/codehaus/plexus/util/AbstractTestThread.html#AbstractTestThread">AbstractTestThread</a> runThread : runThreads) {
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>             runThread.reset();
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>             registerThread(runThread);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         }
+<a class="jxr_linenumber" name="L139" href="#L139">139</a> 
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         runThreads.clear();
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         failedThreads.clear();
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>     }
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> }
 </pre>
 <hr/>
 <div id="footer">© 2001–2026 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>

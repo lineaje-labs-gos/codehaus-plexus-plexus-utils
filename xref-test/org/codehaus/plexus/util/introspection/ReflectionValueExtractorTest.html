@@ -327,7 +327,7 @@
 <a class="jxr_linenumber" name="L319" href="#L319">319</a> 
 <a class="jxr_linenumber" name="L320" href="#L320">320</a>         <strong class="jxr_keyword">private</strong> Scm scm;
 <a class="jxr_linenumber" name="L321" href="#L321">321</a> 
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>         <strong class="jxr_keyword">private</strong> List dependencies = <strong class="jxr_keyword">new</strong> ArrayList();
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;Dependency&gt; dependencies = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L323" href="#L323">323</a> 
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>         <strong class="jxr_keyword">private</strong> Build build;
 <a class="jxr_linenumber" name="L325" href="#L325">325</a> 
@@ -337,7 +337,7 @@
 <a class="jxr_linenumber" name="L329" href="#L329">329</a> 
 <a class="jxr_linenumber" name="L330" href="#L330">330</a>         <strong class="jxr_keyword">private</strong> String version;
 <a class="jxr_linenumber" name="L331" href="#L331">331</a> 
-<a class="jxr_linenumber" name="L332" href="#L332">332</a>         <strong class="jxr_keyword">private</strong> Map&lt;String, Artifact&gt; artifactMap = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L332" href="#L332">332</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Map&lt;String, Artifact&gt; artifactMap = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
 <a class="jxr_linenumber" name="L333" href="#L333">333</a>         <strong class="jxr_keyword">private</strong> String description;
 <a class="jxr_linenumber" name="L334" href="#L334">334</a> 
 <a class="jxr_linenumber" name="L335" href="#L335">335</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setModelVersion(String modelVersion) {
@@ -384,7 +384,7 @@
 <a class="jxr_linenumber" name="L376" href="#L376">376</a>             <strong class="jxr_keyword">return</strong> groupId;
 <a class="jxr_linenumber" name="L377" href="#L377">377</a>         }
 <a class="jxr_linenumber" name="L378" href="#L378">378</a> 
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>         <strong class="jxr_keyword">public</strong> List getDependencies() {
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>         <strong class="jxr_keyword">public</strong> List&lt;Dependency&gt; getDependencies() {
 <a class="jxr_linenumber" name="L380" href="#L380">380</a>             <strong class="jxr_keyword">return</strong> dependencies;
 <a class="jxr_linenumber" name="L381" href="#L381">381</a>         }
 <a class="jxr_linenumber" name="L382" href="#L382">382</a> 
@@ -405,82 +405,81 @@
 <a class="jxr_linenumber" name="L397" href="#L397">397</a>         }
 <a class="jxr_linenumber" name="L398" href="#L398">398</a> 
 <a class="jxr_linenumber" name="L399" href="#L399">399</a>         <strong class="jxr_keyword">public</strong> Dependency[] getDependenciesAsArray() {
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>             <strong class="jxr_keyword">return</strong> (Dependency[]) getDependencies().toArray(<strong class="jxr_keyword">new</strong> Dependency[0]);
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>             <strong class="jxr_keyword">return</strong> getDependencies().toArray(<strong class="jxr_keyword">new</strong> Dependency[0]);
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>         }
 <a class="jxr_linenumber" name="L402" href="#L402">402</a> 
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>         <strong class="jxr_keyword">public</strong> Map getDependenciesAsMap() {
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>             Map ret = <strong class="jxr_keyword">new</strong> HashMap();
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>             <strong class="jxr_keyword">for</strong> (Object o : getDependencies()) {
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>                 Dependency dep = (Dependency) o;
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>                 ret.put(dep.getArtifactId(), dep);
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>             }
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>             <strong class="jxr_keyword">return</strong> ret;
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>         }
-<a class="jxr_linenumber" name="L411" href="#L411">411</a> 
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>         <em class="jxr_comment">// ${project.artifactMap(g:a:v)}</em>
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addArtifact(Artifact a) {
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>             artifactMap.put(a.getGroupId() + <span class="jxr_string">":"</span> + a.getArtifactId() + <span class="jxr_string">":"</span> + a.getClassifier(), a);
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>         }
-<a class="jxr_linenumber" name="L416" href="#L416">416</a> 
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>         <strong class="jxr_keyword">public</strong> Map&lt;String, Artifact&gt; getArtifactMap() {
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>             <strong class="jxr_keyword">return</strong> artifactMap;
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>         }
-<a class="jxr_linenumber" name="L420" href="#L420">420</a> 
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDescription(String description) {
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>             <strong class="jxr_keyword">this</strong>.description = description;
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>         }
-<a class="jxr_linenumber" name="L424" href="#L424">424</a> 
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>         <strong class="jxr_keyword">public</strong> String getDescription() {
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>             <strong class="jxr_keyword">return</strong> description;
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>         }
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>     }
-<a class="jxr_linenumber" name="L429" href="#L429">429</a> 
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Build {}
-<a class="jxr_linenumber" name="L431" href="#L431">431</a> 
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Dependency {
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>         <strong class="jxr_keyword">private</strong> String artifactId;
-<a class="jxr_linenumber" name="L434" href="#L434">434</a> 
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>         <strong class="jxr_keyword">public</strong> String getArtifactId() {
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>             <strong class="jxr_keyword">return</strong> artifactId;
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>         }
-<a class="jxr_linenumber" name="L438" href="#L438">438</a> 
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setArtifactId(String id) {
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>             artifactId = id;
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>         }
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>     }
-<a class="jxr_linenumber" name="L443" href="#L443">443</a> 
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Scm {
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>         <strong class="jxr_keyword">private</strong> String connection;
-<a class="jxr_linenumber" name="L446" href="#L446">446</a> 
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setConnection(String connection) {
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>             <strong class="jxr_keyword">this</strong>.connection = connection;
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>         }
-<a class="jxr_linenumber" name="L450" href="#L450">450</a> 
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         <strong class="jxr_keyword">public</strong> String getConnection() {
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>             <strong class="jxr_keyword">return</strong> connection;
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>         }
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>     }
-<a class="jxr_linenumber" name="L455" href="#L455">455</a> 
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> ValueHolder {
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Object value;
-<a class="jxr_linenumber" name="L458" href="#L458">458</a> 
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>         <strong class="jxr_keyword">public</strong> ValueHolder(Object value) {
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>             <strong class="jxr_keyword">this</strong>.value = value;
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>         }
-<a class="jxr_linenumber" name="L462" href="#L462">462</a> 
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>         <strong class="jxr_keyword">public</strong> Object getValue() {
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>             <strong class="jxr_keyword">return</strong> value;
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>         }
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>     }
-<a class="jxr_linenumber" name="L467" href="#L467">467</a> 
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>     @Test
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">void</strong> rootPropertyRegression() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>         Project project = <strong class="jxr_keyword">new</strong> Project();
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>         project.setDescription(<span class="jxr_string">"c:&#92;&#92;&#92;&#92;org&#92;&#92;apache&#92;&#92;test"</span>);
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>         Object evalued = ReflectionValueExtractor.evaluate(<span class="jxr_string">"description"</span>, project);
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>         assertNotNull(evalued);
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>     }
-<a class="jxr_linenumber" name="L475" href="#L475">475</a> }
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>         <strong class="jxr_keyword">public</strong> Map&lt;String, Dependency&gt; getDependenciesAsMap() {
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>             Map&lt;String, Dependency&gt; ret = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>             <strong class="jxr_keyword">for</strong> (Dependency d : getDependencies()) {
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>                 ret.put(d.getArtifactId(), d);
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>             }
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>             <strong class="jxr_keyword">return</strong> ret;
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         }
+<a class="jxr_linenumber" name="L410" href="#L410">410</a> 
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>         <em class="jxr_comment">// ${project.artifactMap(g:a:v)}</em>
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addArtifact(Artifact a) {
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>             artifactMap.put(a.getGroupId() + <span class="jxr_string">":"</span> + a.getArtifactId() + <span class="jxr_string">":"</span> + a.getClassifier(), a);
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>         }
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>         <strong class="jxr_keyword">public</strong> Map&lt;String, Artifact&gt; getArtifactMap() {
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>             <strong class="jxr_keyword">return</strong> artifactMap;
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>         }
+<a class="jxr_linenumber" name="L419" href="#L419">419</a> 
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDescription(String description) {
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>             <strong class="jxr_keyword">this</strong>.description = description;
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>         }
+<a class="jxr_linenumber" name="L423" href="#L423">423</a> 
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>         <strong class="jxr_keyword">public</strong> String getDescription() {
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>             <strong class="jxr_keyword">return</strong> description;
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>         }
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     }
+<a class="jxr_linenumber" name="L428" href="#L428">428</a> 
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Build {}
+<a class="jxr_linenumber" name="L430" href="#L430">430</a> 
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Dependency {
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>         <strong class="jxr_keyword">private</strong> String artifactId;
+<a class="jxr_linenumber" name="L433" href="#L433">433</a> 
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>         <strong class="jxr_keyword">public</strong> String getArtifactId() {
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>             <strong class="jxr_keyword">return</strong> artifactId;
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>         }
+<a class="jxr_linenumber" name="L437" href="#L437">437</a> 
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setArtifactId(String id) {
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>             artifactId = id;
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>         }
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>     }
+<a class="jxr_linenumber" name="L442" href="#L442">442</a> 
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Scm {
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>         <strong class="jxr_keyword">private</strong> String connection;
+<a class="jxr_linenumber" name="L445" href="#L445">445</a> 
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setConnection(String connection) {
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>             <strong class="jxr_keyword">this</strong>.connection = connection;
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>         }
+<a class="jxr_linenumber" name="L449" href="#L449">449</a> 
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>         <strong class="jxr_keyword">public</strong> String getConnection() {
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>             <strong class="jxr_keyword">return</strong> connection;
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>         }
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>     }
+<a class="jxr_linenumber" name="L454" href="#L454">454</a> 
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> ValueHolder {
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Object value;
+<a class="jxr_linenumber" name="L457" href="#L457">457</a> 
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>         <strong class="jxr_keyword">public</strong> ValueHolder(Object value) {
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>             <strong class="jxr_keyword">this</strong>.value = value;
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>         }
+<a class="jxr_linenumber" name="L461" href="#L461">461</a> 
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>         <strong class="jxr_keyword">public</strong> Object getValue() {
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>             <strong class="jxr_keyword">return</strong> value;
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>         }
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>     }
+<a class="jxr_linenumber" name="L466" href="#L466">466</a> 
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>     @Test
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>     <strong class="jxr_keyword">void</strong> rootPropertyRegression() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>         Project project = <strong class="jxr_keyword">new</strong> Project();
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         project.setDescription(<span class="jxr_string">"c:&#92;&#92;&#92;&#92;org&#92;&#92;apache&#92;&#92;test"</span>);
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>         Object evalued = ReflectionValueExtractor.evaluate(<span class="jxr_string">"description"</span>, project);
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>         assertNotNull(evalued);
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>     }
+<a class="jxr_linenumber" name="L474" href="#L474">474</a> }
 </pre>
 <hr/>
 <div id="footer">© 2001–2026 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
